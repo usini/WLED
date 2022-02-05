@@ -138,9 +138,19 @@ using PSRAMDynamicJsonDocument = BasicJsonDocument<PSRAM_Allocator>;
 #endif
 
 #include "fcn_declare.h"
-#include "html_ui.h"
-#include "html_settings.h"
-#include "html_other.h"
+
+#ifdef FRENCH
+#include "html_ui_fr.h"
+#include "html_settings_fr.h"
+#include "html_other_fr.h"
+#endif
+
+#ifdef ENGLISH
+#include "html_ui_en.h"
+#include "html_settings_en.h"
+#include "html_other_en.h"
+#endif
+
 #include "FX.h"
 #include "ir_codes.h"
 #include "const.h"

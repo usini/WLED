@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta name="viewport" content="width=500">
+	<meta charset="utf-8">
+	<title>Autres paramètres</title>
+	<script>
+		var d = document;
+		function H()
+		{
+			window.open("https://github.com/Aircoookie/WLED/wiki/Settings#security-settings");
+		}
+		function B()
+		{
+			window.open("/settings","_self");
+		}
+		function U()
+		{
+			window.open("/update","_self");
+		}
+		function gId(s)
+		{
+			return d.getElementById(s);
+		}
+		function isObject(item) {
+			return (item && typeof item === 'object' && !Array.isArray(item));
+		}
+		var timeout;
+		function showToast(text, error = false)
+		{
+			var x = gId("toast");
+			x.innerHTML = text;
+			x.className = error ? "error":"show";
+			clearTimeout(timeout);
+			x.style.animation = 'none';
+			timeout = setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2900);
+		}
+		function uploadFile(fO,name) {
+			var req = new XMLHttpRequest();
+			req.addEventListener('load', function(){showToast(this.responseText,this.status >= 400)});
+			req.addEventListener('error', function(e){showToast(e.stack,true);});
+			req.open("POST", "/upload");
+			var formData = new FormData();
+			formData.append("data", fO.files[0], name);
+			req.send(formData);
+			fO.value = '';
+			return false;
+	    }
+		function GetV()
+		{
+			//values injected by server while sending HTML
+		}
+	</script>
+	<style>
+		@import url("style.css");
+	</style>
+</head>
+<body onload="GetV()">
+	<form id="form_s" name="Sf" method="post">
+		<div class="helpB"><button type="button" onclick="H()">?</button></div>
+		<button type="button" onclick="B()">Retour</button><button type="submit">Sauvegarder & Redémarrer</button><hr>
+		<h2>Securité & Paramètres de mise à jour</h2>
+		Bloquer la mise à jour logiciel sans fil (OTA): <input type="checkbox" name="NO"><br>
+		Passe secret: <input type="password" name="OP" maxlength="32"><br>
+		Par sécurité, vous devez entrer un mot de passe pour activer l'OTA<br>
+		Le mot de passe doit être changé quand l'OTA est actif.<br>
+		<b>Désactiver l'OTA quand il n'est pas utile, sinon un attaquant pourrait flasher son propre logiciel!</b><br>
+		<i>Les paramètres sur cette page ne peuvent être changés si l'OTA est activé!</i><br>
+		Bloquer l'accès aux paramètres WiFi si bloqué: <input type="checkbox" name="OW"><br><br>
+		Restaurer les paramètres d'usine: <input type="checkbox" name="RS"><br>
+		Tous les paramètres et presets seront effacés.<br><br>
+		Le trafic HTTP n'est pas chiffré. Un attaquant sur le même réseau pourrait intercepter les données!
+		<h3>Mis à jour logiciel</h3>
+		<button type="button" onclick="U()">Mise à jour OTA manuel</button><br>
+		Activer ArduinoOTA: <input type="checkbox" name="AO"><br>
+    <h3>Archive & Restaurer</h3>
+		<a class="btn lnk" href="/presets.json?download" target="download-frame">Archiver les presets</a><br>
+		<div>Restaurer presets<br><input type="file" name="data" accept=".json"> <input type="button" value="Upload" onclick="uploadFile(d.Sf.data,'/presets.json');"><br></div><br>
+		<a class="btn lnk" href="/cfg.json?download" target="download-frame">Archiver la configuration</a><br>
+		<div>Restaurer la configuration<br><input type="file" name="data2" accept=".json"> <input type="button" value="Upload" onclick="uploadFile(d.Sf.data2,'/cfg.json');"><br></div>
+		<div style="color: #fa0;">&#9888; Les presets/configurations actuelles seront écrasées si vous restaurez les presets/configurations.<br>
+		Une configuration incorrecte pourrait nécessiter de revenir aux paramètres d'usine ou de reflasher l'ESP.</div>
+    Pour des raisons de sécurité, les mots de passe ne sont pas archivés.
+		<h3>À Propos</h3>
+		<a href="https://github.com/Aircoookie/WLED/" target="_blank">WLED</a> version ##VERSION##<!-- Autoreplaced from package.json --><br><br>
+		<a href="https://github.com/Aircoookie/WLED/wiki/Contributors-and-credits" target="_blank">Contributeurs, dépendances et remerciements particuliers</a><br>
+		Un grand merci à tous ceux qui ont aidé à créer WLED!<br><br>
+		(c) 2016-2021 Christian Schwinne <br>
+		<i>Logiciel sous <a href="https://github.com/Aircoookie/WLED/blob/master/LICENSE" target="_blank">license MIT</a></i><br><br>
+		Message du serveur: <span class="sip"> Erreur de réponse! </span><hr>
+		<div id="toast"></div>
+		<button type="button" onclick="B()">Retour</button><button type="submit">Sauvegarder & Redémarrer</button>
+	</form>
+	<iframe name=download-frame style='display:none;'></iframe>
+</body>
+</html>
+
+

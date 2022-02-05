@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{language}}">
 <head>
   <meta charset="utf-8">
 	<meta name="viewport" content="width=500">
-	<title>LED Settings</title>
+	<title>{{LED Settings}}</title>
 	<script>
     var d=document,laprev=55,maxB=1,maxM=4000,maxPB=4096,maxL=1333,maxLbquot=0; //maximum bytes for LED allocation: 4kB for 8266, 32kB for 32
 		var customStarts=false,startsDirty=[];
@@ -45,9 +45,9 @@
         //check for pin conflicts
         if (nm=="L0" || nm=="L1" || nm=="L2" || nm=="L3" || nm=="L4" || nm=="RL" || nm=="BT" || nm=="IR")
           if (LCs[i].value!="" && LCs[i].value!="-1") {
-            if (d.um_p && d.um_p.some((e)=>e==parseInt(LCs[i].value,10))) {alert(`Sorry, pins ${JSON.stringify(d.um_p)} can't be used.`);LCs[i].value="";LCs[i].focus();return false;}
-            else if (LCs[i].value > 5 && LCs[i].value < 12) {alert("Sorry, pins 6-11 can not be used.");LCs[i].value="";LCs[i].focus();return false;}
-            else if (!(nm == "IR" || nm=="BT") && LCs[i].value > 33) {alert("Sorry, pins >33 are input only.");LCs[i].value="";LCs[i].focus();return false;}
+            if (d.um_p && d.um_p.some((e)=>e==parseInt(LCs[i].value,10))) {alert(`{{Sorry, pins}} ${JSON.stringify(d.um_p)} {{can't be used}}.`);LCs[i].value="";LCs[i].focus();return false;}
+            else if (LCs[i].value > 5 && LCs[i].value < 12) {alert("{{Sorry, pins}} 6-11 {{can't be used}}.");LCs[i].value="";LCs[i].focus();return false;}
+            else if (!(nm == "IR" || nm=="BT") && LCs[i].value > 33) {alert("{{Sorry, pins}} >33 {{are input only}}.");LCs[i].value="";LCs[i].focus();return false;}
             for (j=i+1; j<LCs.length; j++)
             {
               var n2 = LCs[j].name.substring(0,2);
@@ -57,7 +57,7 @@
                   var t2 = parseInt(d.getElementsByName("LT"+m)[0].value, 10);
                   if (t2>=80) continue;
                 }
-                if (LCs[j].value!="" && LCs[i].value==LCs[j].value) {alert(`Pin conflict between ${LCs[i].name}/${LCs[j].name}!`);LCs[j].value="";LCs[j].focus();return false;}
+                if (LCs[j].value!="" && LCs[i].value==LCs[j].value) {alert(`{{Pin conflict between}} ${LCs[i].name}/${LCs[j].name}!`);LCs[j].value="";LCs[j].focus();return false;}
               }
             }
           }
@@ -68,7 +68,7 @@
       d.Sf.data.value = '';
       e.preventDefault();
       if (!pinsOK()) {e.stopPropagation();return false;} // Prevent form submission and contact with server
-      if (bquot > 100) {var msg = "Too many LEDs for me to handle!"; if (maxM < 10000) msg += "\n\rConsider using an ESP32."; alert(msg);}
+      if (bquot > 100) {var msg = "{{Too many LEDs for me to handle}}!"; if (maxM < 10000) msg += "\n\r{{Consider using an ESP32}}."; alert(msg);}
       if (d.Sf.checkValidity()) d.Sf.submit(); //https://stackoverflow.com/q/37323914
     }
 		function S(){GetV();checkSi();setABL();}
@@ -137,7 +137,7 @@
         if (s[i].name.substring(0,2)=="LT") {
           var n = s[i].name.substring(2);
           var t = parseInt(s[i].value,10);
-          gId("p0d"+n).innerHTML = (t>=80 && t<96) ? "IP address:" : (t > 49) ? "Data GPIO:" : (t >41) ? "GPIOs:" : "GPIO:";
+          gId("p0d"+n).innerHTML = (t>=80 && t<96) ? "{{IP address}}:" : (t > 49) ? "data GPIO:" : (t >41) ? "GPIOs:" : "GPIO:";
           gId("p1d"+n).innerHTML = (t> 49 && t<64) ? "Clk GPIO:" : "";
           var LK = d.getElementsByName("L1"+n)[0]; // clock pin
 
@@ -170,8 +170,8 @@
           gId("dig"+n+"r").style.display = (t>=80 && t<96) ? "none":"inline";  // hide reversed for virtual
           gId("dig"+n+"s").style.display = ((t>=80 && t<96) || (t > 40 && t < 48)) ? "none":"inline";  // hide skip 1st for virtual & analog
           gId("dig"+n+"f").style.display = (t>=16 && t<32 || t>=50 && t<64) ? "inline":"none";  // hide refresh
-          gId("rev"+n).innerHTML = (t > 40 && t < 48) ? "Inverted output":"Reversed (rotated 180°)";  // change reverse text for analog
-          gId("psd"+n).innerHTML = (t > 40 && t < 48) ? "Index:":"Start:";    // change analog start description
+          gId("rev"+n).innerHTML = (t > 40 && t < 48) ? "{{Inverted output}}":"{{Reversed}} {{rotated 180}}°";  // change reverse text for analog
+          gId("psd"+n).innerHTML = (t > 40 && t < 48) ? "{{Index}}:":"{{Start}}:";    // change analog start description
         }
       }
       // display white channel calculation method
@@ -241,7 +241,7 @@
       }
       // update total led count
       gId("lc").textContent = sLC;
-      gId("pc").textContent = (sLC == sPC) ? "":"(" + sPC + " physical)";
+      gId("pc").textContent = (sLC == sPC) ? "":"(" + sPC + " {{physical}})";
 
       // memory usage and warnings
       gId('m0').innerHTML = memu;
@@ -249,7 +249,7 @@
       gId('dbar').style.background = `linear-gradient(90deg, ${bquot > 60 ? (bquot > 90 ? "red":"orange"):"#ccc"} 0 ${bquot}%%, #444 ${bquot}%% 100%%)`;
       gId('ledwarning').style.display = (maxLC > Math.min(maxPB,800) || bquot > 80) ? 'inline':'none';
       gId('ledwarning').style.color = (maxLC > Math.max(maxPB,800) || bquot > 100) ? 'red':'orange';
-      gId('wreason').innerHTML = (bquot > 80) ? "80% of max. LED memory" +(bquot>100 ? ` (<b>ERROR: Using over ${maxM}B!</b>)` : "") : "800 LEDs per output";
+      gId('wreason').innerHTML = (bquot > 80) ? "80% {{of max. LED memory}}" +(bquot>100 ? ` (<b>{{ERROR}}: {{Using over}} ${maxM}B!</b>)` : "") : "{{800 LEDs per output}}";
       // calculate power
       var val = Math.ceil((100 + sPC * laprev)/500)/2;
 			val = (val > 5) ? Math.ceil(val) : val;
@@ -258,18 +258,18 @@
       var isWS2815 = (d.Sf.LAsel.value == 255);
 			if (val < 1.02 && !is12V && !isWS2815)
 			{
-				s = "ESP 5V pin with 1A USB supply";
+				s = "{{ESP 5V pin with 1A USB supply}}";
 			} else
 			{
         		s += is12V ? "12V ": isWS2815 ? "WS2815 12V " : "5V ";
 				s += val;
-				s += "A supply connected to LEDs";
+				s += "{{A supply connected to LEDs}}";
 			}
       var val2 = Math.ceil((100 + sPC * laprev)/1500)/2;
       val2 = (val2 > 5) ? Math.ceil(val2) : val2;
-      var s2 = "(for most effects, ~";
+      var s2 = "({{for most effects}}, ~";
       s2 += val2;
-      s2 += "A is enough)<br>";
+      s2 += "A {{is enough}})<br>";
 			gId('psu').innerHTML = s;
       gId('psu2').innerHTML = isWS2815 ? "" : s2;
       gId("json").style.display = d.Sf.IT.value==8 ? "" : "none";
@@ -324,17 +324,17 @@ ${i+1}:
 <option value="5">GBR</option>
 </select></div>
 <br>
-<span id="psd${i}">Start:</span> <input type="number" name="LS${i}" id="ls${i}" class="l starts" min="0" max="8191" value="${lastEnd(i)}" oninput="startsDirty[${i}]=true;UI();" required />&nbsp;
-<div id="dig${i}c" style="display:inline">Length: <input type="number" name="LC${i}" class="l" min="1" max="${maxPB}" value="1" required oninput="UI()" /></div>
+<span id="psd${i}">{{start}}:</span> <input type="number" name="LS${i}" id="ls${i}" class="l starts" min="0" max="8191" value="${lastEnd(i)}" oninput="startsDirty[${i}]=true;UI();" required />&nbsp;
+<div id="dig${i}c" style="display:inline">{{Length}}: <input type="number" name="LC${i}" class="l" min="1" max="${maxPB}" value="1" required oninput="UI()" /></div>
 <br>
 <span id="p0d${i}">GPIO:</span> <input type="number" name="L0${i}" min="0" max="33" required class="xs" onchange="UI()"/>
 <span id="p1d${i}"></span><input type="number" name="L1${i}" min="0" max="33" class="xs" onchange="UI()"/>
 <span id="p2d${i}"></span><input type="number" name="L2${i}" min="0" max="33" class="xs" onchange="UI()"/>
 <span id="p3d${i}"></span><input type="number" name="L3${i}" min="0" max="33" class="xs" onchange="UI()"/>
 <span id="p4d${i}"></span><input type="number" name="L4${i}" min="0" max="33" class="xs" onchange="UI()"/>
-<div id="dig${i}r" style="display:inline"><br><span id="rev${i}">Reversed</span>: <input type="checkbox" name="CV${i}"></div>
-<div id="dig${i}s" style="display:inline"><br>Skip 1<sup>st</sup> LED: <input id="sl${i}" type="checkbox" name="SL${i}"></div>
-<div id="dig${i}f" style="display:inline"><br>Off Refresh: <input id="rf${i}" type="checkbox" name="RF${i}"></div>
+<div id="dig${i}r" style="display:inline"><br><span id="rev${i}">{{Reversed}}</span>: <input type="checkbox" name="CV${i}"></div>
+<div id="dig${i}s" style="display:inline"><br>{{Skip}} 1<sup>st</sup> LED: <input id="sl${i}" type="checkbox" name="SL${i}"></div>
+<div id="dig${i}f" style="display:inline"><br>Off {{Refresh}}: <input id="rf${i}" type="checkbox" name="RF${i}"></div>
 </div>`;
         f.insertAdjacentHTML("beforeend", cn);
       }
@@ -351,16 +351,16 @@ ${i+1}:
       var c = gId("btns").innerHTML;
       var bt = "BT" + String.fromCharCode((i<10?48:55)+i);;
       var be = "BE" + String.fromCharCode((i<10?48:55)+i);;
-      c += `Button ${i} GPIO: <input type="number" min="-1" max="40" name="${bt}" onchange="UI()" class="xs" value="${p}">`;
+      c += `{{Button}} ${i} GPIO: <input type="number" min="-1" max="40" name="${bt}" onchange="UI()" class="xs" value="${p}">`;
       c += `&nbsp;<select name="${be}">`
-      c += `<option value="0" ${t==0?"selected":""}>Disabled</option>`;
-      c += `<option value="2" ${t==2?"selected":""}>Pushbutton</option>`;
-      c += `<option value="3" ${t==3?"selected":""}>Push inverted</option>`;
-      c += `<option value="4" ${t==4?"selected":""}>Switch</option>`;
-      c += `<option value="5" ${t==5?"selected":""}>PIR sensor</option>`;
-      c += `<option value="6" ${t==6?"selected":""}>Touch</option>`;
-      c += `<option value="7" ${t==7?"selected":""}>Analog</option>`;
-      c += `<option value="8" ${t==8?"selected":""}>Analog inverted</option>`;
+      c += `<option value="0" ${t==0?"selected":""}>{{Disabled}}</option>`;
+      c += `<option value="2" ${t==2?"selected":""}>{{Pushbutton}}</option>`;
+      c += `<option value="3" ${t==3?"selected":""}>{{Push inverted}}</option>`;
+      c += `<option value="4" ${t==4?"selected":""}>{{Switch}}</option>`;
+      c += `<option value="5" ${t==5?"selected":""}>{{PIR sensor}}</option>`;
+      c += `<option value="6" ${t==6?"selected":""}>{{Touch}}</option>`;
+      c += `<option value="7" ${t==7?"selected":""}>{{Analog}}</option>`;
+      c += `<option value="8" ${t==8?"selected":""}>{{Analog inverted}}</option>`;
       c += `</select>`;
       c += `<span style="cursor: pointer;" onclick="off('${bt}')">&nbsp;&#215;</span><br>`;
       gId("btns").innerHTML = c;
@@ -396,14 +396,14 @@ ${i+1}:
       var f, fr;
 
       if (typeof window.FileReader !== 'function') {
-        alert("The file API isn't supported on this browser yet.");
+        alert("{{The file API isn't supported on this browser yet}}.");
         return;
       }
 
       if (!o.files) {
-        alert("This browser doesn't support the `files` property of file inputs.");
+        alert("{{This browser doesn't support the `files` property of file inputs}}.");
       } else if (!o.files[0]) {
-        alert("Please select a JSON file first!");
+        alert("{{Please select a JSON file first}}!");
       } else {
         f = o.files[0];
         fr = new FileReader();
@@ -414,7 +414,7 @@ ${i+1}:
 
       function receivedText(e) {
         let lines = e.target.result;
-        var c = JSON.parse(lines); 
+        var c = JSON.parse(lines);
         if (c.hw) {
           if (c.hw.led) {
             for (var i=0; i<10; i++) addLEDs(-1);
@@ -464,118 +464,121 @@ ${i+1}:
 <body onload="S()">
 	<form id="form_s" name="Sf" method="post">
 		<div class="helpB"><button type="button" onclick="H()">?</button></div>
-		<button type="button" onclick="B()">Back</button><button type="submit">Save</button><hr>
-    <h2>LED &amp; Hardware setup</h2>
-    Total LEDs: <span id="lc">?</span> <span id="pc"></span><br>
-    <i>Recommended power supply for brightest white:</i><br>
+		<button type="button" onclick="B()">{{Back}}</button><button type="submit">{{Save}}</button><hr>
+    <h2>LED &amp; {{Hardware setup}}</h2>
+    {{Total}} LEDs: <span id="lc">?</span> <span id="pc"></span><br>
+    <i>{{Recommended power supply for brightest white}}:</i><br>
     <b><span id="psu">?</span></b><br>
     <span id="psu2"><br></span>
     <br>
-    Enable automatic brightness limiter: <input type="checkbox" name="ABen" onchange="enABL()" id="able"><br>
+    {{Enable automatic brightness limiter}}: <input type="checkbox" name="ABen" onchange="enABL()" id="able"><br>
     <div id="abl">
-      Maximum Current: <input name="MA" type="number" class="l" min="250" max="65000" oninput="UI()" required> mA<br>
+      {{Maximum Current}}: <input name="MA" type="number" class="l" min="250" max="65000" oninput="UI()" required> mA<br>
       <div id="ampwarning" style="color: orange; display: none;">
-        &#9888; Your power supply provides high current.<br>
-        To improve the safety of your setup,<br>
-        please use thick cables,<br>
-        multiple power injection points and a fuse!<br>
+        &#9888; {{Your power supply provides high current}}.<br>
+        {{To improve the safety of your setup}} ,<br>
+        {{please use thick cables}},<br>
+        {{multiple power injection points and a fuse}}!<br>
       </div>
-      <i>Automatically limits brightness to stay close to the limit.<br>
-      Keep at &lt;1A if powering LEDs directly from the ESP 5V pin!<br>
-      If you are using an external power supply, enter its rating.<br>
-      (Current estimated usage: <span class="pow">unknown</span>)</i><br><br>
-      LED voltage (Max. current for a single LED):<br>
+      <i>{{Automatically limits brightness to stay close to the limit}}.<br>
+      {{Keep at &lt;1A if powering LEDs directly from the ESP 5V pin}}!<br>
+      {{If you are using an external power supply, enter its rating}}.<br>
+      ({{Current estimated usage}}: <span class="pow">{{unknown}}</span>)</i><br><br>
+      {{LED voltage}} {{Max. current for a single LED}}:<br>
       <select name="LAsel" onchange="enLA()">
-        <option value="55" selected>5V default (55mA)</option>
-        <option value="35">5V efficient (35mA)</option>
+        <option value="55" selected>5V {{default}} (55mA)</option>
+        <option value="35">5V {{efficient}} (35mA)</option>
         <option value="30">12V (30mA)</option>
         <option value="255">WS2815 (12mA)</option>
-        <option value="50">Custom</option>
+        <option value="50">{{Custom}}</option>
       </select><br>
-      <span id="LAdis" style="display: none;">Custom max. current per LED: <input name="LA" type="number" min="0" max="255" id="la" oninput="UI()" required> mA<br></span>
-      <i>Keep at default if you are unsure about your type of LEDs.</i><br>
+      <span id="LAdis" style="display: none;">{{Custom max. current per LED}}: <input name="LA" type="number" min="0" max="255" id="la" oninput="UI()" required> mA<br></span>
+      <i>{{Keep at default if you are unsure about your type of LEDs}}.</i><br>
     </div>
-    <h3>Hardware setup</h3>
-    <div id="mLC">LED outputs:</div>
+    <h3>{{Hardware setup}}</h3>
+    <div id="mLC">{{LED outputs}}:</div>
     <hr style="width:260px">
     <button type="button" id="+" onclick="addLEDs(1,false)" style="display:none;border-radius:20px;height:36px;">+</button>
     <button type="button" id="-" onclick="addLEDs(-1,false)" style="display:none;border-radius:20px;width:36px;height:36px;">-</button><br>
-    LED Memory Usage: <span id="m0">0</span> / <span id="m1">?</span> B<br>
+    {{LED Memory Usage}}: <span id="m0">0</span> / <span id="m1">?</span> B<br>
     <div id="dbar" style="display:inline-block; width: 100px; height: 10px; border-radius: 20px;"></div><br>
     <div id="ledwarning" style="color: orange; display: none;">
-      &#9888; You might run into stability or lag issues.<br>
-      Use less than <span id="wreason">800 LEDs per output</span> for the best experience!<br>
+      &#9888; {{You might run into stability or lag issues}}.<br>
+      {{Use less than}} <span id="wreason">{{800 LEDs per output}}</span> {{for the best experience}}!<br>
     </div>
     <hr style="width:260px">
-    Make a segment for each output: <input type="checkbox" name="MS"> <br>
-    Custom bus start indices: <input type="checkbox" onchange="tglSi(this.checked)" id="si"> <br>
+    {{Make a segment for each output}}: <input type="checkbox" name="MS"> <br>
+    {{Custom bus start indices}}: <input type="checkbox" onchange="tglSi(this.checked)" id="si"> <br>
     <hr style="width:260px">
     <div id="btns"></div>
-    Touch threshold: <input type="number" class="s" min="0" max="100" name="TT" required><br>
+    {{Touch threshold}}: <input type="number" class="s" min="0" max="100" name="TT" required><br>
     IR GPIO: <input type="number" min="-1" max="40" name="IR" onchange="UI()" class="xs"><select name="IT" onchange="UI()">
-    <option value=0>Remote disabled</option>
-    <option value=1>24-key RGB</option>
-    <option value=2>24-key with CT</option>
-    <option value=3>40-key blue</option>
-    <option value=4>44-key RGB</option>
-    <option value=5>21-key RGB</option>
-    <option value=6>6-key black</option>
-    <option value=7>9-key red</option>
-    <option value=8>JSON remote</option>
+    <option value=0>{{Remote}} {{disabled}}</option>
+    <option value=1>24-{{key}} RGB</option>
+    <option value=2>24-{{key}} {{with}} CT</option>
+    <option value=3>40-{{key}} {{blue}}</option>
+    <option value=4>44-{{key}} RGB</option>
+    <option value=5>21-{{key}} RGB</option>
+    <option value=6>6-{{key}} {{black}}</option>
+    <option value=7>9-{{key}} {{red}}</option>
+    <option value=8>{{JSON remote}}</option>
     </select><span style="cursor: pointer;" onclick="off('IR')">&nbsp;&#215;</span><br>
-    <div id="json" style="display:none;">JSON file: <input type="file" name="data" accept=".json"> <input type="button" value="Upload" onclick="uploadFile('/ir.json');"><br></div>
+    <div id="json" style="display:none;">{{JSON file}}: <input type="file" name="data" accept=".json"> <input type="button" value="Upload" onclick="uploadFile('/ir.json');"><br></div>
     <div id="toast"></div>
-    <a href="https://kno.wled.ge/interfaces/infrared/" target="_blank">IR info</a><br>
-    Relay GPIO: <input type="number" min="-1" max="33" name="RL" onchange="UI()" class="xs"> Invert <input type="checkbox" name="RM"><span style="cursor: pointer;" onclick="off('RL')">&nbsp;&#215;</span><br>
+    <a href="https://kno.wled.ge/interfaces/infrared/" target="_blank">{{IR info}}</a><br>
+    {{Relay}} GPIO: <input type="number" min="-1" max="33" name="RL" onchange="UI()" class="xs"> {{Invert}} <input type="checkbox" name="RM"><span style="cursor: pointer;" onclick="off('RL')">&nbsp;&#215;</span><br>
     <hr style="width:260px">
-		<h3>Defaults</h3>
-		Turn LEDs on after power up/reset: <input type="checkbox" name="BO"><br>
-    Default brightness: <input name="CA" type="number" class="s" min="0" max="255" required> (0-255)<br><br>
-    Apply preset <input name="BP" type="number" class="s" min="0" max="250" required> at boot (0 uses defaults)
+		<h3>{{Defaults}}</h3>
+		{{Turn LEDS after reset}}: <input type="checkbox" name="BO"><br>
+    {{Default brightness}}: <input name="CA" type="number" class="s" min="0" max="255" required> (0-255)<br><br>
+    {{Apply preset}} <input name="BP" type="number" class="s" min="0" max="250" required> {{at boot}} ({{0 uses defaults}})
     <br><br>
-		Use Gamma correction for color: <input type="checkbox" name="GC"> (strongly recommended)<br>
-		Use Gamma correction for brightness: <input type="checkbox" name="GB"> (not recommended)<br><br>
-		Brightness factor: <input name="BF" type="number" class="s" min="1" max="255" required> %%
-		<h3>Transitions</h3>
-		Crossfade: <input type="checkbox" name="TF"><br>
-		Transition Time: <input name="TD" type="number" class="l" min="0" max="65500"> ms<br>
-		Enable Palette transitions: <input type="checkbox" name="PF">
-		<h3>Timed light</h3>
-		Default Duration: <input name="TL" type="number" class="s" min="1" max="255" required> min<br>
-		Default Target brightness: <input name="TB" type="number" class="s" min="0" max="255" required><br>
-		Mode:
+		{{Use Gamma correction}} {{for color}}: <input type="checkbox" name="GC"> ({{strongly}} {{recommended}})<br>
+		{{Use Gamma correction}} {{for brightness}}: <input type="checkbox" name="GB"> ({{not}} {{recommended}})<br><br>
+		{{Brightness factor}}: <input name="BF" type="number" class="s" min="1" max="255" required> %%
+		<h3>{{Transitions}}</h3>
+		{{Crossfade}}: <input type="checkbox" name="TF"><br>
+		{{Transition Time}}: <input name="TD" type="number" class="l" min="0" max="65500"> ms<br>
+		{{Enable Palette transitions}}: <input type="checkbox" name="PF">
+		<h3>{{Timed light}}</h3>
+		{{Default Duration}}: <input name="TL" type="number" class="s" min="1" max="255" required> {{min}}<br>
+		{{Default Target brightness}}: <input name="TB" type="number" class="s" min="0" max="255" required><br>
+		{{Mode}}:
     <select name="TW">
-			<option value="0">Wait and set</option>
-			<option value="1">Fade</option>
-			<option value="2">Fade Color</option>
-			<option value="3">Sunrise</option>
+			<option value="0">{{Wait and set}}</option>
+			<option value="1">{{Fade}}</option>
+			<option value="2">{{Fade Color}}</option>
+			<option value="3">{{Sunrise}}</option>
 		</select>
-		<h3>White management</h3>
-		White Balance correction: <input type="checkbox" name="CCT"> <br>
+		<h3>{{White management}}</h3>
+		{{White Balance correction}}: <input type="checkbox" name="CCT"> <br>
 		<span class="wc">
-      Auto-calculate white channel from RGB:<br>
+      {{Auto-calculate white channel from RGB}}:<br>
       <select name="AW">
-        <option value=0>None</option>
-        <option value=1>Brighter</option>
-        <option value=2>Accurate</option>
-        <option value=3>Dual</option>
+        <option value=0>{{None}}</option>
+        <option value=1>{{Brighter}}</option>
+        <option value=2>{{Accurate}}</option>
+        <option value=3>{{Dual}}</option>
       </select>
     <br>
-    Calculate CCT from RGB: <input type="checkbox" name="CR"> <br>
-    CCT additive blending: <input type="number" class="s" min="0" max="100" name="CB" required> %%</span>
-    <h3>Advanced</h3>
-		Palette blending:
+    {{Calculate CCT from RGB}}: <input type="checkbox" name="CR"> <br>
+    {{CCT additive blending}}: <input type="number" class="s" min="0" max="100" name="CB" required> %%</span>
+    <h3>{{Advanced}}</h3>
+		{{Palette blending}}:
 		<select name="PB">
-			<option value="0">Linear (wrap if moving)</option>
-			<option value="1">Linear (always wrap)</option>
-			<option value="2">Linear (never wrap)</option>
-			<option value="3">None (not recommended)</option>
+			<option value="0">{{Linear}} ({{wrap if moving}})</option>
+			<option value="1">{{Linear}} ({{always wrap}})</option>
+			<option value="2">{{Linear}} ({{never wrap}})</option>
+			<option value="3">{{None}} ({{not recommended}})</option>
 		</select><br>
-		Target refresh rate: <input type="number" class="s" min="1" max="120" name="FR" required> FPS
+		{{Target refresh rate}}: <input type="number" class="s" min="1" max="120" name="FR" required> FPS
     <hr style="width:260px">
-    <div id="cfg">Config template: <input type="file" name="data2" accept=".json"> <input type="button" value="Apply" onclick="loadCfg(d.Sf.data2);"><br></div>
+    <div id="cfg">{{Config template}}: <input type="file" name="data2" accept=".json"> <input type="button" value="{{Apply}}" onclick="loadCfg(d.Sf.data2);"><br></div>
     <hr>
-    <button type="button" onclick="B()">Back</button><button type="submit">Save</button>
+    <button type="button" onclick="B()">{{Back}}</button><button type="submit">{{Save}}</button>
 	</form>
 </body>
 </html>
+
+<script src="localisation/fr.js"></script>
+<script src="localisation/translate.js"></script>

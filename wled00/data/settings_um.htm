@@ -3,7 +3,7 @@
 <head lang="en">
     <meta charset="utf-8">
     <meta name="viewport" content="width=500">
-    <title>Usermod Settings</title>
+    <title>{{Usermod Settings}}</title>
     <script>
     var d = document;
     var umCfg = {};
@@ -21,13 +21,13 @@
             loc = true;
             locip = localStorage.getItem('locIp');
             if (!locip) {
-                locip = prompt("File Mode. Please enter WLED IP!");
+                locip = prompt("{{File Mode. Please enter WLED IP}}!");
                 localStorage.setItem('locIp', locip);
             }
         }
         GetV();
         if (numM > 0 || locip) ldS();
-        else gId("um").innerHTML = "No Usermods installed.";
+        else gId("um").innerHTML = "{{No Usermods installed}}.";
     }
     // https://stackoverflow.com/questions/3885817/how-do-i-check-that-a-number-is-float-or-integer
     function isF(n) { return n === +n && n !== (n|0); }
@@ -118,7 +118,7 @@
                     addField(k,'unknown',o);
                 }
             }
-            if (urows==="") urows = "Usermods configuration not found.<br>Press <i>Save</i> to initialize defaults.";
+            if (urows==="") urows = "{{Usermods configuration not found}}.<br>{{Press}} <i>{{Save}}</i> {{to initialize defaults}}.";
             gId("um").innerHTML = urows;
         })
         .catch(function (error) {
@@ -142,14 +142,18 @@
 	<form id="form_s" name="Sf" method="post" onsubmit="svS(event)">
 		<div class="toprow">
 		<div class="helpB"><button type="button" onclick="H()">?</button></div>
-		<button type="button" onclick="B()">Back</button><button type="submit">Save</button><br>
-		<span id="lssuc" style="color:green; display:none">&#10004; Configuration saved!</span>
-		<span id="lserr" style="color:red; display:none">&#9888; Could not load configuration.</span><hr>
+		<button type="button" onclick="B()">{{Back}}</button><button type="submit">{{Save}}</button><br>
+		<span id="lssuc" style="color:green; display:none">&#10004; {{Configuration saved}}!</span>
+		<span id="lserr" style="color:red; display:none">&#9888; {{Could not load configuration}}.</span><hr>
 		</div>
-		<h2>Usermod Setup</h2>
-        <div id="um">Loading settings...</div>
-		<hr><button type="button" onclick="B()">Back</button><button type="submit">Save</button>
+		<h2>{{Usermod Setup}}</h2>
+        <div id="um">{{Loading settings}}...</div>
+		<hr><button type="button" onclick="B()">{{Back}}</button><button type="submit">{{Save}}</button>
 	</form>
 </body>
 
 </html>
+
+
+<script src="localisation/en.js"></script>
+<script src="localisation/translate.js"></script>

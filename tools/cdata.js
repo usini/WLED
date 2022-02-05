@@ -18,6 +18,14 @@
 const fs = require("fs");
 const packageJson = require("../package.json");
 
+if(typeof process.argv[2] === 'undefined') {
+  lang_name = "fr";
+} else {
+  lang_name = process.argv[2];
+}
+
+const folder_name = "wled00/data/" + lang_name;
+
 /**
  *
  */
@@ -194,10 +202,10 @@ function writeChunks(srcDir, specs, resultFile) {
   fs.writeFileSync(resultFile, src);
 }
 
-writeHtmlGzipped("wled00/data/index.htm", "wled00/html_ui.h");
+writeHtmlGzipped(folder_name + "/index.htm", "wled00/html_ui_"+lang_name+".h");
 
 writeChunks(
-  "wled00/data",
+  folder_name,
   [
     {
       file: "style.css",
@@ -350,11 +358,11 @@ const char PAGE_settings_dmx[] PROGMEM = R"=====()=====";
           ),
     }
   ],
-  "wled00/html_settings.h"
+  "wled00/html_settings_"+lang_name+".h"
 );
 
 writeChunks(
-  "wled00/data",
+  folder_name,
   [
     {
       file: "usermod.htm",
@@ -436,5 +444,5 @@ const char PAGE_dmxmap[] PROGMEM = R"=====()=====";
       method: "binary",
     },
   ],
-  "wled00/html_other.h"
+  "wled00/html_other_"+lang_name+".h"
 );

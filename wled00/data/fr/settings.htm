@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="UTF-8">
+	<title>Paramètres WLED</title>
+	<style>
+		body {
+			text-align: center;
+			background: #222;
+			height: 100px;
+			margin: 0;
+		}
+		html {
+			--h: 10.2vh;
+		}
+		button {
+			background: #333;
+			color: #fff;
+			font-family: Verdana, Helvetica, sans-serif;
+			border: 1px solid #333;
+			border-radius: var(--h);
+			font-size: 6vmin;
+			height: var(--h);
+			width: calc(100% - 40px);
+			margin-top: 2vh;
+		}
+	</style>
+</head>
+<body>
+<form action="/"><button type=submit id="b">Retour</button></form>
+<form action="/settings/wifi"><button type="submit">Paramètres WiFi</button></form>
+<form action="/settings/leds"><button type="submit">Préférences des LEDs</button></form>
+<form action="/settings/ui"><button type="submit">Interface utilisateur</button></form>
+<form action="/settings/sync"><button type="submit">Interfaces de Synchro.</button></form>
+<form action="/settings/time"><button type="submit">Temps & Macros</button></form>
+<form action="/settings/um"><button type="submit">Mods utilisateur</button></form>
+<form action="/settings/sec"><button type="submit">Securité & Mis à jour</button></form>
+</body>
+</html>
+
+

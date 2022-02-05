@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+	<meta name="viewport" content="width=500">
+	<title>Paramètres WiFi</title>
+	<script>
+		function H()
+		{
+			window.open("https://github.com/Aircoookie/WLED/wiki/Settings#wifi-settings");
+		}
+		function B()
+		{
+			window.open("/settings","_self");
+		}
+		function GetV()
+		{
+			//values injected by server while sending HTML
+		}
+	</script>
+	<style>
+		@import url("style.css");
+	</style>
+</head>
+<body onload="GetV()">
+	<form id="form_s" name="Sf" method="post">
+		<div class="helpB"><button type="button" onclick="H()">?</button></div>
+		<button type="button" onclick="B()">Retour</button><button type="submit">Sauvegarder & Connectez</button><hr>
+		<h2>Paramètres WiFi</h2>
+		<h3>Connectez à un réseau existant</h3>
+		Nom réseau (SSID, vide si non connecté): <br><input name="CS" maxlength="32"><br>
+		Mot de passe réseau: <br> <input type="password" name="CP" maxlength="63"><br>
+		IP Statique laissez à 0.0.0.0 pour le DHCP:<br>
+		<input name="I0" type="number" class="s" min="0" max="255" required> .
+		<input name="I1" type="number" class="s" min="0" max="255" required> .
+		<input name="I2" type="number" class="s" min="0" max="255" required> .
+		<input name="I3" type="number" class="s" min="0" max="255" required><br>
+		Passerelle static:<br>
+		<input name="G0" type="number" class="s" min="0" max="255" required> .
+		<input name="G1" type="number" class="s" min="0" max="255" required> .
+		<input name="G2" type="number" class="s" min="0" max="255" required> .
+		<input name="G3" type="number" class="s" min="0" max="255" required><br>
+		Masque de sous réseau statique:<br>
+		<input name="S0" type="number" class="s" min="0" max="255" required> .
+		<input name="S1" type="number" class="s" min="0" max="255" required> .
+		<input name="S2" type="number" class="s" min="0" max="255" required> .
+		<input name="S3" type="number" class="s" min="0" max="255" required><br>
+		Adresse mDNS (laissez vide pour désactiver le mDNS):<br/>
+		http:// <input name="CM" maxlength="32"> .local<br>
+		IP du client: <span class="sip"> Non connecté </span> <br>
+		<h3>Configurez le Point d'Accès</h3>
+		SSID de l'AP (laissez vite pour pas d'AP):<br> <input name="AS" maxlength="32"><br>
+		Cachez le nom de l'AP: <input type="checkbox" name="AH"><br>
+		Mot de passe de l'AP (Vide ou au min. 8 caractères):<br> <input type="password" name="AP" maxlength="63" pattern="(.{8,63})|()" title="Vide ou au min. 8 caractères"><br>
+		Canal WiFi du Point d'Accès: <input name="AC" type="number" class="xs" min="1" max="13" required><br>
+    AP s'ouvre:
+    <select name="AB">
+    <option value="0">Aucune connexion après démarrage</option>
+    <option value="1">Déconnecté</option>
+    <option value="2">Toujours</option>
+    <option value="3">Jamais (non recommandé)</option></select><br>
+		IP de l'AP: <span class="sip"> {{Not active} </span><br>
+		<h3>Expérimental</h3>
+		Désactiver le sommeil WiFi: <input type="checkbox" name="WS"><br>
+		<i>Peut aider en cas de problème de connexion.<br>
+    Ne l'activez pas si le WiFi fonctionne correctement, au risque d'augmenter la consommation électrique.</i>
+    <div id="ethd">
+		<h3>Type d'Ethernet</h3>
+		<select name="ETH">
+		<option value="0">Aucun</option>
+    <option value="2">ESP32-POE</option>
+    <option value="6">ESP32Deux</option>
+    <option value="4">QuinLED-ESP32</option>
+    <option value="5">TwilightLord-ESP32</option>
+    <option value="3">WESP32</option>
+		<option value="1">WT32-ETH01</option>
+    </select><br><br></div>
+		<hr>
+		<button type="button" onclick="B()">Retour</button><button type="submit">Sauvegarder & Connectez</button>
+	</form>
+</body>
+</html>
+
+

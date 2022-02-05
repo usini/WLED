@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta name="viewport" content="width=500"><meta charset="utf-8"><title>Paramètres de Synchro</title>
+<script>var d=document;
+function gId(s)
+{
+  return d.getElementById(s);
+}
+function H(){window.open("https://github.com/Aircoookie/WLED/wiki/Settings#sync-settings");}function B(){window.open("/settings","_self");}
+function adj(){if (d.Sf.DI.value == 6454) {if (d.Sf.DA.value == 1) d.Sf.DA.value = 0; if (d.Sf.EU.value == 1) d.Sf.EU.value = 0;}
+               else if (d.Sf.DI.value == 5568) {if (d.Sf.DA.value == 0) d.Sf.DA.value = 1; if (d.Sf.EU.value == 0) d.Sf.EU.value = 1;} }
+function FC()
+{
+  for(j=0;j<8;j++)
+  {
+    gId("G"+(j+1)).checked=gId("GS").value>>j&1;
+    gId("R"+(j+1)).checked=gId("GR").value>>j&1;
+  }
+}
+function GC()
+{
+  var a=0, b=0;
+
+  var m=1;
+  for(j=0;j<8;j++)
+  {
+    a+=gId("G"+(j+1)).checked*m;
+    b+=gId("R"+(j+1)).checked*m;
+    m*=2;
+  }
+  gId("GS").value=a;
+  gId("GR").value=b;
+}
+function SP(){var p = d.Sf.DI.value; gId("xp").style.display = (p > 0)?"none":"block"; if (p > 0) d.Sf.EP.value = p;}
+function SetVal(){switch(parseInt(d.Sf.EP.value)){case 5568: d.Sf.DI.value = 5568; break; case 6454: d.Sf.DI.value = 6454; break; case 4048: d.Sf.DI.value = 4048; break; }; SP();FC();}
+function S(){GetV();SetVal();}
+function GetV(){var d=document;}
+</script>
+<style>@import url("style.css");</style></head>
+<body onload="S()">
+<form id="form_s" name="Sf" method="post" onsubmit="GC()">
+<div class="helpB"><button type="button" onclick="H()">?</button></div>
+<button type="button" onclick="B()">Retour</button><button type="submit">Sauvegarder</button><hr>
+<h2>Paramètres de Synchro</h2>
+<h3>Broadcast WLED</h3>
+Port UDP: <input name="UP" type="number" min="1" max="65535" class="d5" required><br>
+Second Port: <input name="U2" type="number" min="1" max="65535" class="d5" required><br><br>
+<input name="GS" id="GS" type="number" style="display: none;"> <!-- hidden inputs for bitwise group checkboxes -->
+<input name="GR" id="GR" type="number" style="display: none;">
+<table style="margin: 0 auto;">
+    <tr>
+        <td>Groupe de synchro</td>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+        <td>7</td>
+        <td>8</td>
+    </tr>
+    <tr>
+        <td>Envoyer:</td>
+        <td><input type="checkbox" id="G1" name="G1"></td>
+        <td><input type="checkbox" id="G2" name="G2"></td>
+        <td><input type="checkbox" id="G3" name="G3"></td>
+        <td><input type="checkbox" id="G4" name="G4"></td>
+        <td><input type="checkbox" id="G5" name="G5"></td>
+        <td><input type="checkbox" id="G6" name="G6"></td>
+        <td><input type="checkbox" id="G7" name="G7"></td>
+        <td><input type="checkbox" id="G8" name="G8"></td>
+    </tr>
+    <tr>
+        <td>Recevoir:</td>
+        <td><input type="checkbox" id="R1" name="R1"></td>
+        <td><input type="checkbox" id="R2" name="R2"></td>
+        <td><input type="checkbox" id="R3" name="R3"></td>
+        <td><input type="checkbox" id="R4" name="R4"></td>
+        <td><input type="checkbox" id="R5" name="R5"></td>
+        <td><input type="checkbox" id="R6" name="R6"></td>
+        <td><input type="checkbox" id="R7" name="R7"></td>
+        <td><input type="checkbox" id="R8" name="R8"></td>
+    </tr>
+</table><br>
+Recevoir: <input type="checkbox" name="RB">Luminosité, <input type="checkbox" name="RC">Couleur, et <input type="checkbox" name="RX">Effets<br>
+Notifications en cas de changement direct: <input type="checkbox" name="SD"><br>
+Notifications en cas d'appui de bouton ou IR: <input type="checkbox" name="SB"><br>
+Envoyer des notifications Alexa: <input type="checkbox" name="SA"><br>
+Envoi des notifications de changement sur Philips Hue: <input type="checkbox" name="SH"><br>
+Envoi des macros de notifications: <input type="checkbox" name="SM"><br>
+Envoi d'une notification en double: <input type="checkbox" name="S2"><br>
+<i>Redémarrage requis pour appliquer les changements. </i>
+<h3>Liste des instance</h3>
+Activer la liste des instances: <input type="checkbox" name="NL"><br>
+Faire que cette instance soit découvrable: <input type="checkbox" name="NB">
+<h3>Temps réel</h3>
+Recevoir de l'UDP en temps réel: <input type="checkbox" name="RD"><br><br>
+<i>Entrée DMX réseau</i><br>
+Type:
+<select name=DI onchange="SP(); adj();">
+<option value=5568>E1.31 (sACN)</option>
+<option value=6454>Art-Net</option>
+<option value=0 selected>Port personnalisé</option>
+</select><br>
+<div id=xp>Port: <input name="EP" type="number" min="1" max="65535" value="5568" class="d5" required><br></div>
+Multicast: <input type="checkbox" name="EM"><br>
+Début univers: <input name="EU" type="number" min="0" max="63999" required><br>
+<i>Redémarrage requis.</i> Aller voir <a href="https://github.com/LedFx/LedFx" target="_blank">LedFx</a>!<br>
+Omettre les paquets dans le désordre: <input type="checkbox" name="ES"><br>
+DMX Adresse de démarrage: <input name="DA" type="number" min="0" max="510" required><br>
+Mode DMX:
+<select name=DM>
+<option value=0>Déactiver</option>
+<option value=1>RGB simple</option>
+<option value=2>DRGB simple</option>
+<option value=3>Effet</option>
+<option value=4>Multi RGB</option>
+<option value=5>Variateur + Multi RGB</option>
+<option value=6>Multi RGBW</option>
+</select><br>
+<a href="https://github.com/Aircoookie/WLED/wiki/E1.31-DMX" target="_blank">E1.31 info</a><br>
+Délai d'attente: <input name="ET" type="number" min="1" max="65000" required> ms<br>
+Forcez la luminosité max: <input type="checkbox" name="FB"><br>
+Désactiver la correction gamma temps réel: <input type="checkbox" name="RG"><br>
+Décalage des LED temps réel: <input name="WO" type="number" min="-255" max="255" required>
+<h3>Assistant vocale Alexa</h3>
+Émuler un appareil Alexa: <input type="checkbox" name="AL"><br>
+Nom Alexa: <input name="AI" maxlength="32">
+<h3>Blynk</h3>
+<b>Blynk, MQTT et Hue sync se connecte tous à des hôtes externes!<br>
+Ceci peut avoir un impact sur la réactivité de l'ESP.</b><br>
+Pour de meilleurs résultats, n'utilisez pas plus d'un service à la fois.<br>
+(Sinon, connectez un deuxième ESP à celui-ci pour utiliser la synchro UDP)<br><br>
+Hôte: <input name="BH" maxlength="32">
+Port: <input name="BP" type="number" min="1" max="65535" value="80" class="d5"><br>
+Token d'Auth de l'appareil: <input name="BK" maxlength="33"><br>
+<i>Effacer le champ du token pour le désactiver. </i><a href="https://github.com/Aircoookie/WLED/wiki/Blynk" target="_blank">Info des paramètres</a>
+<h3>MQTT</h3>
+Activer MQTT: <input type="checkbox" name="MQ"><br>
+Broker: <input name="MS" maxlength="32">
+Port: <input name="MQPORT" type="number" min="1" max="65535" class="d5"><br>
+<b>Les identifiants MQTT sont envoyés depuis une connexion non sécurisée.<br>
+N'utilisez pas ce mot de passe MQTT pour un autre service!</b><br>
+Utilisateur: <input name="MQUSER" maxlength="40"><br>
+Mot de passe: <input type="password" name="MQPASS" maxlength="64"><br>
+ID Client: <input name="MQCID" maxlength="40"><br>
+Topic de l'appareil: <input name="MD" maxlength="32"><br>
+Topic du groupe: <input name="MG" maxlength="32"><br>
+Publié en cas d'appui de bouton: <input type="checkbox" name="BM"><br>
+<i>Redémarrage requis pour appliquer les changements. </i><a href="https://github.com/Aircoookie/WLED/wiki/MQTT" target="_blank">Info MQTT</a>
+<h3>Philips Hue</h3>
+<i>Vous pouvez trouver l'IP de la passerelle et le numéro de la lumière dans la section 'À Propos' de l'application hue.</i><br>
+Interroger la lumière Hue <input name="HL" type="number" min="1" max="99" > chaque <input name="HI" type="number" min="100" max="65000"> ms: <input type="checkbox" name="HP"><br>
+Puis, recevoir <input type="checkbox" name="HO"> On/Off, <input type="checkbox" name="HB"> Luminosité, et <input type="checkbox" name="HC"> Couleur<br>
+IP de la Passerelle Hue:<br>
+<input name="H0" type="number" min="0" max="255" > .
+<input name="H1" type="number" min="0" max="255" > .
+<input name="H2" type="number" min="0" max="255" > .
+<input name="H3" type="number" min="0" max="255" ><br>
+<b>Appuyez sur le bouton pushlink de la passerelle, puis sauvegarder!</b><br>
+(lors de la première connexion)<br>
+Statut Hue: <span class="sip"> Désactivé dans cette version du build </span><hr>
+<button type="button" onclick="B()">Retour</button><button type="submit">Sauvegarder</button>
+</form>
+</body>
+</html>
+
+

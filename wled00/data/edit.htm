@@ -224,19 +224,19 @@ function createFileUploader(element, tree, editor){
   path.defaultValue = "/";
   ge(element).appendChild(path);
   var button = ce("button");
-  button.innerHTML = 'Upload';
+  button.innerHTML = '{{Upload}}';
   ge(element).appendChild(button);
   var mkfile = ce("button");
-  mkfile.innerHTML = 'Create';
+  mkfile.innerHTML = '{{Create}}';
   ge(element).appendChild(mkfile);
 
   var savefile = ce("button");
-  savefile.innerHTML = ' Save ' ;
+  savefile.innerHTML = ' {{Save}} ' ;
   ge(element).appendChild(savefile);
 
   function httpPostProcessRequest(status, responseText){
     if(status != 200)
-      alert("ERROR "+status+": "+responseText);
+      alert("{{ERROR}} "+status+": "+responseText);
     else
       tree.refreshPath(path.value);
   }
@@ -307,13 +307,13 @@ function createTree(element, editor){
     var action = ce("li");
     list.appendChild(action);
     if(isImageFile(path)){
-      action.innerHTML = "<span>Preview</span>";
+      action.innerHTML = "<span>{{Preview}}</span>";
       action.onclick = function(e){
         loadPreview(path);
         if(document.body.getElementsByClassName('cm').length > 0) document.body.removeChild(el);
       };
     } else if(isTextFile(path)){
-      action.innerHTML = "<span>Edit</span>";
+      action.innerHTML = "<span>{{Edit}}</span>";
       action.onclick = function(e){
         editor.loadUrl(path);
         if(document.body.getElementsByClassName('cm').length > 0) document.body.removeChild(el);
@@ -321,14 +321,14 @@ function createTree(element, editor){
     }
     var download = ce("li");
     list.appendChild(download);
-    download.innerHTML = "<span>Download</span>";
+    download.innerHTML = "<span>{{Download}}</span>";
     download.onclick = function(e){
       loadDownload(path);
       if(document.body.getElementsByClassName('cm').length > 0) document.body.removeChild(el);
     };
     var delFile = ce("li");
     list.appendChild(delFile);
-    delFile.innerHTML = "<span>Delete</span>";
+    delFile.innerHTML = "<span>{{Delete}}</span>";
     delFile.onclick = function(e){
       httpDelete(path);
       if(document.body.getElementsByClassName('cm').length > 0) document.body.removeChild(el);
@@ -433,7 +433,7 @@ function createTree(element, editor){
   function delCb(path){
     return function(status, responseText){
       if(status != 200){
-        alert("ERROR "+status+": "+responseText);
+        alert("{{ERROR}} "+status+": "+responseText);
       } else {
         treeRoot.removeChild(treeRoot.childNodes[0]);
         httpGet(treeRoot, "/");
@@ -504,7 +504,7 @@ function createEditor(element, file, lang, theme, type){
 
   var editor = ace.edit(element);
   function httpPostProcessRequest(status, responseText){
-    if(status != 200) alert("ERROR "+status+": "+responseText);
+    if(status != 200) alert("{{ERROR}} "+status+": "+responseText);
   }
   function httpPost(filename, data, type){
     var formData = new FormData();
@@ -584,3 +584,6 @@ function onBodyLoad(){
   <iframe id=download-frame style='display:none;'></iframe>
 </body>
 </html>
+
+<script src="localisation/fr.js"></script>
+<script src="localisation/translate.js"></script>
